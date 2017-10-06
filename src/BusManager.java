@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**Manage the buses
+ * @author Alexi Courieux*/
 public class BusManager {
 //Variables
 	private List<Bus> busList = new ArrayList<>();
