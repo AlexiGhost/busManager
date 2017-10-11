@@ -3,12 +3,12 @@ package com.unice;
 import java.util.ArrayList;
 import java.util.List;
 
-/**Manage the buses (this is a Singleton class)*/
+/**Manage the buses (this is a Singleton class)
+ * @author Courieux Alexi*/
 public class BusManager{
 
 //Variables
 	
-	private static final long serialVersionUID = -1875173359551727817L;
 	private static BusManager INSTANCE = new BusManager();
 	
 	private List<Bus> busList = null;

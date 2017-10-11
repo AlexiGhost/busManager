@@ -7,6 +7,10 @@ import java.util.List;
 
 /**A bus of messages box.*/
 public class Bus implements Serializable{
+
+//TODO Un consommateur peut demander à lister des messages qui se trouvent dans une boîte sur un bus. <-- RETOURNER LA LISTE DE MESSAGE
+//TODO Un consommateur peut demander à lister tous les messages qui se trouvent sur le bus dans ce cas tous les messages dans toutes le boîtes lui sont retournés.*/ 
+	
 //Variables
 	private String name;
 	private List<Box> boxes = new ArrayList<>();
@@ -110,21 +114,6 @@ public class Bus implements Serializable{
 		}
 		System.err.println("The box '"+boxName+"' doesn't exist");
 		return null;
-	}
-	/**Get all the messages of a box.
-	 * @param boxName the box to read.
-	 * @see Box
-	 * @see Message*/
-	public void getBoxMessages(String boxName){
-		if(isBoxExist(boxName)){
-			getBox(boxName).getMessages();			
-		}
-	}
-	/**Read all the messages of this bus.
-	 * @see Box
-	 * @see Message*/
-	public void readBus(){
-		//TODO !!!
 	}
 	
 	/**Define a new bus type (check if exist)

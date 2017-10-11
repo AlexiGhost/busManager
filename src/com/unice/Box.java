@@ -2,8 +2,9 @@ package com.unice;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-//TODO delete messages by creationDate
+
 /**A box of messages.*/
 public class Box implements Serializable{
 //Variables
@@ -51,6 +52,20 @@ public class Box implements Serializable{
 	 * @deprecated*/
 	public void deleteMessage(int nMessage){
 		messages.remove(nMessage);
+	}
+	/**Delete messages if they are older than the time in parameters
+	 * @param day the number of day
+	 * @param hour the number of hour
+	 * @param minute the number of minute
+	 * @param seconds the number of seconds*/
+	public void deleteOlderMessage(int day, int hour, int minute, int seconds){
+		long MaxTime = day*24*3600000 + hour*3600000 + minute*60000 + seconds*1000;
+		Date now = new Date();
+		for(Message message : getMessages()){
+			if((now.getTime()-message.getDateCreation().getTime()) > MaxTime){
+				messages.remove(messages.indexOf(message));
+			}
+		}
 	}
 	/**Delete all the messages of the box.*/
 	public void deleteMessages(){
