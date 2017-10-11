@@ -1,17 +1,23 @@
 package com.unice;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**Manage the buses*/
-public class BusManager implements Serializable{
+/**Manage the buses (this is a Singleton class)*/
+public class BusManager{
 
 //Variables
 	
 	private static final long serialVersionUID = -1875173359551727817L;
+	private static BusManager INSTANCE = new BusManager();
 	
-	private List<Bus> busList = new ArrayList<>();
+	private List<Bus> busList = null;
+
+//Constructor
+	/**Private constructor*/
+	private BusManager(){
+		importBusList("datas/busList");
+	}
 //Functions
 	
 	//Create
@@ -19,7 +25,7 @@ public class BusManager implements Serializable{
 	 * @param name the bus name*/
 	public void createBus(String name, String busType){
 		if (!isBusExist(name)){
-			busList.add(new Bus(name, busType));			
+			busList.add(new Bus(name, busType));
 		}
 	}
 	//Delete
@@ -45,6 +51,10 @@ public class BusManager implements Serializable{
 		return false;
 	}
 //Getters & Setters
+	public static BusManager getInstance(){
+		return INSTANCE;
+	}
+	
 	/**Return the buses list
 	 * @return List<Bus>*/
 	public List<Bus> getBuses(){
@@ -61,4 +71,28 @@ public class BusManager implements Serializable{
 		}
 		return null;
 	}
+	
+//Import & Export
+	
+	/**Import the bus list from a file
+	 * @param sourceFile the source file name (must have a '.ser' extension)*/
+	public void importBusList(String sourceFile){
+		Object readedObject = Save.read(sourceFile+".ser");
+		if(readedObject instanceof ArrayList){ //Check if the Object sub-type is an ArrayList 
+			busList = (ArrayList<Bus>) readedObject; 			
+		} else if(busList == null) {
+			busList = new ArrayList<>();
+		} else {
+			System.err.println("The source file doesn't contain the bus list or is corrupted");
+		}
+	}
+	
+	/**Export the bus list to a serialized file
+	 * @param targetFile the target file name (must have a '.ser' extension)*/
+	public void exportBusList(String targetFile){
+		Save.save(busList, targetFile+".ser");
+	}
 }
+
+
+

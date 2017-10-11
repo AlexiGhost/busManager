@@ -1,10 +1,11 @@
 package com.unice;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 //TODO delete messages by creationDate
 /**A box of messages.*/
-public class Box {
+public class Box implements Serializable{
 //Variables
 	private static int MAX_MESSAGE = 20;
 	private static int MAX_MESSAGE_SIZE = 0; //0 = pas de limite

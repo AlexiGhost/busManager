@@ -1,9 +1,10 @@
 package com.unice;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**A message with a content*/
-public class Message {
+public class Message implements Serializable{
 //Variables	
 	private String content;
 	private Date dateCreation;

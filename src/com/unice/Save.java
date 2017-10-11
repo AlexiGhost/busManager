@@ -42,7 +42,7 @@ public class Save {
             o = ois.readObject();
             //System.out.println(o);
         } catch (final java.io.FileNotFoundException e) {
-            //System.out.println("No older saves");
+            System.out.println("No older saves");
         } catch (final java.io.IOException e) {
             e.printStackTrace();
         } catch (final ClassNotFoundException e) {

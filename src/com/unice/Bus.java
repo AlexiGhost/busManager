@@ -1,18 +1,18 @@
 package com.unice;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**A bus of messages box.*/
-public class Bus {
+public class Bus implements Serializable{
 //Variables
 	private String name;
 	private List<Box> boxes = new ArrayList<>();
 	private String busType; //Define the maximum box amount 
 	private static String DEFAULT_BOX = "default"; //The name of the default box
-	private static HashMap<String, Integer> busTypeList = new HashMap<>(); //The list of existing bus types and their limitations
+	private static HashMap<String, Integer> busTypeList = null; //The list of existing bus types and their limitations
 	
 //Constructors
 	/**Create a bus.
@@ -124,14 +124,13 @@ public class Bus {
 	 * @see Box
 	 * @see Message*/
 	public void readBus(){
-		for(Box box : boxes){
-			box.getMessages();
-		}
+		//TODO !!!
 	}
 	
 	/**Define a new bus type (check if exist)
 	 * @param busType the new type of bus*/
 	public void setBusType(String busType){
+		Bus.importBusType("datas/busTypeList");
 		Object maxBus = busTypeList.get(busType);
 		if(maxBus != null){
 			this.busType = busType; 
@@ -156,36 +155,20 @@ public class Bus {
 	/**Import the bus type list from a serialized file
 	 * @param sourceFile the source file name (must have a '.ser' extension)*/
 	public static void importBusType(String sourceFile){
-	      try {
-	    	  ObjectInputStream ois = new ObjectInputStream(new FileInputStream(sourceFile+".ser"));
-	    	  Object readedObject = ois.readObject();
-	    	  if(readedObject instanceof HashMap){ //Check if the Object sub-type is a HashMap 
-	    		  busTypeList = (HashMap<String, Integer>) readedObject;	    		  
-	    	  } else {
-	    		  System.err.println("The source file doesn't contain the bus type list");
-	    	  }
-	    	  ois.close();
-	      } catch(IOException e) {
-	    	  e.printStackTrace();
-	    	  return;
-	      } catch(ClassNotFoundException c) {
-	    	  System.out.println("Class not found");
-	    	  c.printStackTrace();
-	    	  return;
-	      }
+		Object readedObject = Save.read(sourceFile+".ser");
+		if(readedObject instanceof HashMap){ //Check if the Object sub-type is a HashMap 
+			busTypeList = (HashMap<String, Integer>) readedObject;	    		  
+		} else if(busTypeList == null) {
+			busTypeList = new HashMap<>();
+		} else {
+			System.err.println("The source file doesn't contain the bus type list");
+		}
 	}
 	
 	/**Export the bus type list into a serialize file
 	 * @param targetFile the target file name (must have a '.ser' extension)*/
 	public static void exportBusType(String targetFile){
-		try
-        {
-			 ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(targetFile+".ser"));
-			 oos.writeObject(busTypeList);
-			 oos.close();
-        } catch(IOException ioe) {
-       	 ioe.printStackTrace();
-        }
+		Save.save(busTypeList, targetFile+".ser");
 	}
 
 //bus type list editing
@@ -226,4 +209,15 @@ public class Bus {
 		}
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static HashMap<String, Integer> getBusTypeList(){
+		return busTypeList;
+	}
 }
