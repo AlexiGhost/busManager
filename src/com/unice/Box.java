@@ -1,3 +1,5 @@
+package com.unice;
+
 import java.util.ArrayList;
 import java.util.List;
 //TODO delete messages by creationDate

@@ -1,3 +1,5 @@
+package com.unice;
+
 import java.util.Date;
 
 /**A message with a content*/

@@ -1,3 +1,5 @@
+package com.unice;
+
 import org.junit.*;
 
 public class BusTest {
