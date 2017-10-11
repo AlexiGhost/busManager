@@ -1,6 +1,4 @@
-'import static org.junit.Assert.*;
-
-import org.junit.*
+import org.junit.*;
 
 public class BusTest {
 	Bus busA;
@@ -8,7 +6,7 @@ public class BusTest {
 	@Before
 	/**Créer des bus pour les tests*/
 	public void initialise(){
-		busA = new Bus("A");
+		busA = new Bus("A", "Pro");
 	}
 	@After
 	public void clean(){

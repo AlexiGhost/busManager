@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO delete messages by creationDate
 /**A box of messages.*/
 public class Box {
 //Variables

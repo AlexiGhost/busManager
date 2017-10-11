@@ -15,9 +15,9 @@ public class BusManager implements Serializable{
 	//Create
 	/**Create a new bus within the buses list
 	 * @param name the bus name*/
-	public void createBus(String name){
+	public void createBus(String name, String busType){
 		if (!isBusExist(name)){
-			busList.add(new Bus(name));			
+			busList.add(new Bus(name, busType));			
 		}
 	}
 	//Delete
