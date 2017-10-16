@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**A box of messages.*/
+/**A box does contain a list of messages.*/
 public class Box implements Serializable{
 //Variables
-	private static int MAX_MESSAGE = 20;
-	private static int MAX_MESSAGE_SIZE = 0; //0 = pas de limite
+	private static final int MAX_MESSAGE = 20;
+	private static final int MAX_MESSAGE_SIZE = 0; //0 = pas de limite
 	
 	private int maxMessage;
 	private int maxMessageSize;

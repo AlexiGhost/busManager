@@ -76,7 +76,15 @@ public class BusManager{
 		}
 		return null;
 	}
-	
+	/**Return the buses names
+	 * @return List<String> the buses names*/
+	public List<String> getBusesNames(){
+		List<String> busesNames = new ArrayList<>();
+		for(Bus bus : busList){
+			busesNames.add(bus.getName());
+		}
+		return busesNames;
+	}
 //Import & Export
 	
 	/**Import the bus list from a file

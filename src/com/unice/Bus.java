@@ -8,14 +8,13 @@ import java.util.List;
 /**A bus of messages box.*/
 public class Bus implements Serializable{
 
-//TODO Un consommateur peut demander à lister des messages qui se trouvent dans une boîte sur un bus. <-- RETOURNER LA LISTE DE MESSAGE
 //TODO Un consommateur peut demander à lister tous les messages qui se trouvent sur le bus dans ce cas tous les messages dans toutes le boîtes lui sont retournés.*/ 
 	
 //Variables
 	private String name;
 	private List<Box> boxes = new ArrayList<>();
 	private String busType; //Define the maximum box amount 
-	private static String DEFAULT_BOX = "default"; //The name of the default box
+	private static final String DEFAULT_BOX = "default"; //The name of the default box
 	private static HashMap<String, Integer> busTypeList = null; //The list of existing bus types and their limitations
 	
 //Constructors
@@ -103,6 +102,13 @@ public class Bus implements Serializable{
 	public List<Box> getBoxes() {
 		return boxes;
 	}
+	public List<String> getBoxesNames(){
+		List<String> boxesNames = new ArrayList<>();
+		for(Box box : boxes){
+			boxesNames.add(box.getName());
+		}
+		return boxesNames;
+	}
 	/**Return a specific box of this bus.
 	 * @param boxName the name of the box.
 	 * @return Box*/
@@ -115,7 +121,17 @@ public class Bus implements Serializable{
 		System.err.println("The box '"+boxName+"' doesn't exist");
 		return null;
 	}
-	
+	/**Return the messages from all the boxes of this bus
+	 * @return A big messages list does contain all the messages of this bus*/
+	public List<Message> getAllMessages(){
+		List<Message> messageList = new ArrayList<>();
+		for(Box box : boxes){
+			for(Message message : box.getMessages()){
+				messageList.add(message);
+			}
+		}
+		return messageList;
+	}
 	/**Define a new bus type (check if exist)
 	 * @param busType the new type of bus*/
 	public void setBusType(String busType){
@@ -197,14 +213,6 @@ public class Bus implements Serializable{
 			System.err.println("The bus type '"+busType+"' doesn't exist.");
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public static HashMap<String, Integer> getBusTypeList(){
 		return busTypeList;
