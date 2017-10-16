@@ -10,14 +10,15 @@ public class BusManager{
 //Variables
 	
 	private static BusManager INSTANCE = new BusManager();
-	
 	private List<Bus> busList = null;
 
 //Constructor
+	
 	/**Private constructor*/
 	private BusManager(){
 		importBusList("datas/busList");
 	}
+	
 //Functions
 	
 	//Create
@@ -50,7 +51,11 @@ public class BusManager{
 		}
 		return false;
 	}
+	
 //Getters & Setters
+	
+	/**Return the instance of BusManager
+	 * @return BusManager Instance*/
 	public static BusManager getInstance(){
 		return INSTANCE;
 	}
