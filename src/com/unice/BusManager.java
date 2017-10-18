@@ -3,8 +3,7 @@ package com.unice;
 import java.util.ArrayList;
 import java.util.List;
 
-/**Manage the buses (this is a Singleton class)
- * @author Courieux Alexi*/
+/**Manage the buses (this is a Singleton class)*/
 public class BusManager{
 
 //Variables
@@ -96,7 +95,7 @@ public class BusManager{
 		} else if(busList == null) {
 			busList = new ArrayList<>();
 		} else {
-			System.err.println("The source file doesn't contain the bus list or is corrupted");
+			System.err.println("Le fichier source ne contient pas la liste des bus ou est corrompu");
 		}
 	}
 	

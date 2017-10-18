@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 
 /**A bus of messages box.*/
-public class Bus implements Serializable{
-
-//TODO Un consommateur peut demander à lister tous les messages qui se trouvent sur le bus dans ce cas tous les messages dans toutes le boîtes lui sont retournés.*/ 
+public class Bus implements Serializable{ 
 	
-//Variables
+	//Variables
+	private static final long serialVersionUID = 1610173L;
 	private String name;
 	private List<Box> boxes = new ArrayList<>();
 	private String busType; //Define the maximum box amount 
@@ -70,7 +69,7 @@ public class Bus implements Serializable{
 			if(boxName != DEFAULT_BOX){
 				boxes.remove(getBox(boxName));							
 			} else {
-				System.err.println("You can't delete the default box");
+				System.err.println("Vous ne pouvez pas supprimer la boite par défaut.");
 			}
 		}
 	}
@@ -118,7 +117,7 @@ public class Bus implements Serializable{
 				return box;
 			}
 		}
-		System.err.println("The box '"+boxName+"' doesn't exist");
+		System.err.println("La boite '"+boxName+"' n'existe pas");
 		return null;
 	}
 	/**Return the messages from all the boxes of this bus
@@ -138,9 +137,14 @@ public class Bus implements Serializable{
 		Bus.importBusType("datas/busTypeList");
 		Object maxBus = busTypeList.get(busType);
 		if(maxBus != null){
-			this.busType = busType; 
+			if(boxes.size() <= (int)maxBus){
+				this.busType = busType;				
+			} else {
+				System.out.println("Il y a trop de boîtes dans ce bus pour en changer le type\n"
+						+"Supprimer une ou plusieurs boîtes et réessayer.");
+			}
 		} else {
-			System.err.println("The bus type '"+busType+"' doesn't exist.");
+			System.err.println("Le type de bus '"+busType+"' n'existe pas.");
 		}
 	}
 	
@@ -151,9 +155,15 @@ public class Bus implements Serializable{
 		if(maxBus != null){
 			return (int)maxBus;
 		} else {
-			System.err.println("The bus type '"+busType+"' doesn't exist.");
+			System.err.println("Le type de bus '"+busType+"' n'existe pas.");
 			return 0; //if the bus type doesn't exist, the limitation is unheeded
 		}
+	}
+	
+	/**Return the default box name
+	 * @return String*/
+	public static String getDefaultBoxName(){
+		return DEFAULT_BOX;
 	}
 
 //Imports & Exports [bus type list (de)serialization]
@@ -166,7 +176,7 @@ public class Bus implements Serializable{
 		} else if(busTypeList == null) {
 			busTypeList = new HashMap<>();
 		} else {
-			System.err.println("The source file doesn't contain the bus type list");
+			System.err.println("Le fichier source ne contient pas la liste des types de bus.");
 		}
 	}
 	
@@ -210,7 +220,7 @@ public class Bus implements Serializable{
 			busTypeList.put(busType, maxBox);
 			exportBusType(targetFile);
 		} else {
-			System.err.println("The bus type '"+busType+"' doesn't exist.");
+			System.err.println("Le type de bus '"+busType+"' n'existe pas.");
 		}
 	}
 	

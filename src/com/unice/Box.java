@@ -8,6 +8,7 @@ import java.util.List;
 /**A box does contain a list of messages.*/
 public class Box implements Serializable{
 //Variables
+	private static final long serialVersionUID = 1610172L;
 	private static final int MAX_MESSAGE = 20;
 	private static final int MAX_MESSAGE_SIZE = 0; //0 = pas de limite
 	
