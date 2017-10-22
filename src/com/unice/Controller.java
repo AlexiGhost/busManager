@@ -12,8 +12,6 @@ public class Controller {
 	public void start(){
 		
 		while(isStarted){
-			BusManager.getInstance().importBusList("datas/busList.ser");
-			Bus.importBusType("datas/busTypeList.ser");
 			res = ui.startCommand();
 			while (res.length() == 0){ //Avoid the StringIndexOutOfBoundsException
 				res = ui.startCommand();				
@@ -35,6 +33,9 @@ public class Controller {
 			default:
 				ui.printError("Cette commande n'existe pas, veuillez réessayer");
 				break;
+			}
+			for(int i=0;i<0;i++){
+				ui.print("\n");
 			}
 		}
 	}
@@ -59,34 +60,35 @@ public class Controller {
 			break;
 		}
 	}
-	
 	public void createBus(){
 		res = ui.getBusName();
 		res2 = ui.getBusType();
-		BusManager.getInstance().createBus(res, res2);
+		BusManager.createBus(res, res2);
 		ui.print("Bus crée avec succés");
 	}
-	
 	public void createBox(){
 		res = ui.getBusName();
-		res2 = ui.getBoxName();
-		int maxSize = ui.getBoxMaxSize();
-		if (maxSize == 0){
-			BusManager.getInstance().getBus(res).createBox(res2);			
+		if(BusManager.isBusExist(res)){
+			res2 = ui.getBoxName();
+			int maxSize = ui.getBoxMaxSize();
+			if (maxSize == 0){
+				BusManager.getBus(res).createBox(res2);			
+			} else {
+				BusManager.getBus(res).createBox(res2, maxSize);
+			}
+			ui.print("La boite à été crée avec succés");
 		} else {
-			BusManager.getInstance().getBus(res).createBox(res2, maxSize);
+			System.err.println("Ce bus n'existe pas");
 		}
-		ui.print("La boite à été crée avec succés");
 	}
-	
 	public void createMessage(){
 		res = ui.getBusName();
 		res2 = ui.getBoxName();
 		String messageContent = ui.getMessage();
 		if(res2.length() == 0){
-			BusManager.getInstance().getBus(res).createMessage(messageContent);
+			BusManager.getBus(res).createMessage(messageContent);
 		} else {
-			BusManager.getInstance().getBus(res).createMessage(res2, messageContent);			
+			BusManager.getBus(res).createMessage(res2, messageContent);			
 		}
 		ui.print("Message ajouté avec succés !");
 	}
@@ -115,22 +117,18 @@ public class Controller {
 			break;
 		}
 	}
-	
 	public void showBusMessages(){
 		
 	}
-	
 	public void showBoxMessages(){
-		
+
 	}
-	
 	public void showBusesNames(){
 		ui.print("Liste des bus :");
-		for(String busName : BusManager.getInstance().getBusesNames()){
-			ui.print(busName);
+		for(String busName : BusManager.getBusesNames()){
+			ui.print("\t"+busName);
 		}
 	}
-	
 	public void showBoxesNames(){
 		
 	}
@@ -156,20 +154,17 @@ public class Controller {
 			break;
 		}
 	}
-	
 	public void deleteBus(){
 		res = ui.getBusName();
-		BusManager.getInstance().deleteBus(res);
+		BusManager.deleteBus(res);
 		ui.print("Le bus '"+res+"' a été supprimé");
 	}
-	
 	public void deleteBox(){
 		String busName = ui.getBusName();
 		String boxName = ui.getBoxName();
-		BusManager.getInstance().getBus(busName).deleteBox(boxName);
+		BusManager.getBus(busName).deleteBox(boxName);
 		ui.print("La boite '"+boxName+"' a été supprimé");
 	}
-	
 	public void deleteMessages(){
 		String busName = ui.getBusName();
 		String boxName = ui.getBoxName();
@@ -179,7 +174,7 @@ public class Controller {
 		int hour = resIntList.get(1);
 		int minute = resIntList.get(2);
 		int second = resIntList.get(3);
-		BusManager.getInstance().getBus(busName).getBox(boxName).deleteOlderMessage(day, hour, minute, second);
+		BusManager.getBus(busName).getBox(boxName).deleteOlderMessage(day, hour, minute, second);
 		ui.print("Les messages antérieurs à la date indiquée ont été supprimés");
 	}
 }

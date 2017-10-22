@@ -6,7 +6,7 @@ import java.util.Date;
 /**A message with a content*/
 public class Message implements Serializable{
 //Variables	
-	private static final long serialVersionUID = 1610171L;
+	private static final long serialVersionUID = 201710220203L;
 	private String content;
 	private Date dateCreation;
 //Constructors

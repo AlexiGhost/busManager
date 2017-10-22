@@ -15,7 +15,11 @@ public class BusTest {
 		busA = null;
 	}
 	@Test
-	public void bus(){
-		
+	public void getBusName(){
+		Assert.assertEquals("A", busA.getName());
+	}
+	@Test
+	public void getBusType(){
+		Assert.assertEquals("Pro", busA.getBusType());		
 	}
 }

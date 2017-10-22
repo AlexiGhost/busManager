@@ -28,11 +28,9 @@ public class UI {
 		res = reader.nextLine();
 		return res;
 	}
-	
 	public void print(String text){
 		System.out.println(text);
 	}
-	
 	public void printError(String text){
 		System.err.println(text);
 	}
@@ -54,12 +52,12 @@ public class UI {
 	public String showCommand(){
 		System.out.print(
 				line+
-				"Vous souhaitez afficher ...\n"+
+				"Vous souhaitez afficher les ...\n"+
 				line+
-				"1 : Les messages d'un bus\n"+
-				"2 : Les messages d'une boite\n"+
-				"3 : Les noms des bus existants\n"+
-				"4 : Les noms des boites de message\n"+
+				"1 : Messages d'un bus\n"+
+				"2 Messages d'une boite\n"+
+				"3 Noms des bus existants\n"+
+				"4 Noms des boites de message\n"+
 				line);
 		res = reader.nextLine();
 		return res;
@@ -86,8 +84,8 @@ public class UI {
 	
 	public String getBusType(){
 		System.out.println("Liste des types de bus disponibles");
-		for(Map.Entry<String, Integer> entry : Bus.getBusTypeList().entrySet()) {
-		    System.out.println(entry.getKey());
+		for(Map.Entry<String, Integer> busType : BusType.getInstance().entrySet()) {
+		    System.out.println("\t"+busType.getKey());
 		}
 		System.out.print("Type de bus : ");
 		res = reader.nextLine();

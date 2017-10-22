@@ -12,11 +12,13 @@ public class Save {
 	 * @param oToSave the object to save
 	 * @param fileName the destination file*/
     public static void save (Object oToSave, String fileName){
-        ObjectOutputStream oos = null;
+        fileName+=".ser";
+    	ObjectOutputStream oos = null;
         try {
             oos = new ObjectOutputStream(new FileOutputStream(fileName));
             oos.writeObject(oToSave);
             oos.flush();
+            System.out.println("OBJET SAUVEGARDE");
         } catch (final java.io.IOException e) {
             e.printStackTrace();
         } finally {
@@ -34,6 +36,7 @@ public class Save {
     /**Read an object from a file
      * @param fileName the source file*/
     public static Object read (String fileName){
+    	fileName+=".ser";
         ObjectInputStream ois = null;
         Object o = null;
         try {

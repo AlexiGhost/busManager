@@ -9,13 +9,13 @@ public class BusManager{
 //Variables
 	
 	private static BusManager INSTANCE = new BusManager();
-	private List<Bus> busList = null;
+	private static List<Bus> buses = null;
 
 //Constructor
 	
 	/**Private constructor*/
 	private BusManager(){
-		importBusList("datas/busList");
+		importBusList("datas/buses");
 	}
 	
 //Functions
@@ -23,18 +23,19 @@ public class BusManager{
 	//Create
 	/**Create a new bus within the buses list
 	 * @param name the bus name*/
-	public void createBus(String name, String busType){
+	public static void createBus(String name, String busType){
 		if (!isBusExist(name)){
-			busList.add(new Bus(name, busType));
+			buses.add(new Bus(name, busType));
 		}
+		exportBusList("datas/buses");
 	}
 	//Delete
 	/**Delete a bus within the buses list
 	 * @param name The name of the bus you want to delete*/
-	public void deleteBus(String name){
-		for (Bus bus : busList){
+	public static void deleteBus(String name){
+		for (Bus bus : buses){
 			if(isBusExist(name)){
-				busList.remove(bus);
+				buses.remove(bus);
 			}
 		}
 	}
@@ -42,9 +43,9 @@ public class BusManager{
 	/**Check if the bus exist within the buses list
 	 * @return boolean
 	 * @param name the name of the bus to check*/
-	public boolean isBusExist(String name){
-		for (Bus bus : busList) {
-			if (bus.getName() == name){
+	public static boolean isBusExist(String name){
+		for (Bus bus : buses) {
+			if (bus.getName().equals(name)){
 				return true;
 			}
 		}
@@ -61,15 +62,15 @@ public class BusManager{
 	
 	/**Return the buses list
 	 * @return List<Bus>*/
-	public List<Bus> getBuses(){
-		return busList;
+	public static List<Bus> getBuses(){
+		return buses;
 	}
 	/**Return a bus within the buses list
 	 * @return Bus
 	 * @param name the bus name*/
-	public Bus getBus(String name){
-		for (Bus bus : busList) {
-			if (bus.getName() == name){
+	public static Bus getBus(String name){
+		for (Bus bus : buses) {
+			if (bus.getName().equals(name)){
 				return bus;
 			}
 		}
@@ -77,9 +78,9 @@ public class BusManager{
 	}
 	/**Return the buses names
 	 * @return List<String> the buses names*/
-	public List<String> getBusesNames(){
+	public static List<String> getBusesNames(){
 		List<String> busesNames = new ArrayList<>();
-		for(Bus bus : busList){
+		for(Bus bus : buses){
 			busesNames.add(bus.getName());
 		}
 		return busesNames;
@@ -88,21 +89,22 @@ public class BusManager{
 	
 	/**Import the bus list from a file
 	 * @param sourceFile the source file name (must have a '.ser' extension)*/
-	public void importBusList(String sourceFile){
-		Object readedObject = Save.read(sourceFile+".ser");
+	@SuppressWarnings("unchecked") //Checked with InstanceOf
+	public static void importBusList(String sourceFile){
+		Object readedObject = Save.read(sourceFile);
 		if(readedObject instanceof ArrayList){ //Check if the Object sub-type is an ArrayList 
-			busList = (ArrayList<Bus>) readedObject; 			
-		} else if(busList == null) {
-			busList = new ArrayList<>();
+			buses = (ArrayList<Bus>) readedObject; 			
+		} else if(buses == null) {
+			buses = new ArrayList<>();
 		} else {
-			System.err.println("Le fichier source ne contient pas la liste des bus ou est corrompu");
+			System.err.println("Le fichier source est corrompu");
 		}
 	}
 	
 	/**Export the bus list to a serialized file
 	 * @param targetFile the target file name (must have a '.ser' extension)*/
-	public void exportBusList(String targetFile){
-		Save.save(busList, targetFile+".ser");
+	public static void exportBusList(String targetFile){
+		Save.save(buses, targetFile);
 	}
 }
 

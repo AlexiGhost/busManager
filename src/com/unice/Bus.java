@@ -2,19 +2,17 @@ package com.unice;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**A bus of messages box.*/
 public class Bus implements Serializable{ 
 	
 	//Variables
-	private static final long serialVersionUID = 1610173L;
+	private static final long serialVersionUID = 201710220205L;
 	private String name;
+	private String busType;
 	private List<Box> boxes = new ArrayList<>();
-	private String busType; //Define the maximum box amount 
 	private static final String DEFAULT_BOX = "default"; //The name of the default box
-	private static HashMap<String, Integer> busTypeList = null; //The list of existing bus types and their limitations
 	
 //Constructors
 	/**Create a bus.
@@ -31,10 +29,10 @@ public class Bus implements Serializable{
 	 * @see Box*/
 	public void createBox(String name){
 		if(!isBoxExist(name)){
-			if(boxes.size() < getMaxBox() || getMaxBox() == 0) {
-				boxes.add(new Box(name));				
+			if(boxes.size()<this.getMaxBox() || this.getMaxBox()==0){
+				boxes.add(new Box(name));								
 			} else {
-				System.out.println("You've reach the max amount of box for this bus ("+getMaxBox()+")");
+				System.out.println("Vous avez atteint le maximum de boite pour ce bus.");
 			}
 		}
 	}
@@ -43,7 +41,7 @@ public class Bus implements Serializable{
 	 * @see Box*/
 	public void createBox(String name, int maxMessageSize){
 		createBox(name);
-		boxes.get(boxes.indexOf(name)).setMaxMessageSize(maxMessageSize);
+		getBox(name).setMaxMessageSize(maxMessageSize);
 	}
 	
 	/**Create a message into a specific box.
@@ -79,7 +77,7 @@ public class Bus implements Serializable{
 	 * @return boolean*/
 	public boolean isBoxExist(String boxName){
 		for(Box box : boxes){
-			if (box.getName() == name){
+			if (box.getName().equals(name)){
 				return true;
 			}
 		}
@@ -113,7 +111,7 @@ public class Bus implements Serializable{
 	 * @return Box*/
 	public Box getBox(String boxName){
 		for(Box box : boxes){
-			if (box.getName() == boxName){
+			if (box.getName().equals(boxName)){
 				return box;
 			}
 		}
@@ -131,100 +129,37 @@ public class Bus implements Serializable{
 		}
 		return messageList;
 	}
-	/**Define a new bus type (check if exist)
-	 * @param busType the new type of bus*/
-	public void setBusType(String busType){
-		Bus.importBusType("datas/busTypeList");
-		Object maxBus = busTypeList.get(busType);
-		if(maxBus != null){
-			if(boxes.size() <= (int)maxBus){
-				this.busType = busType;				
-			} else {
-				System.out.println("Il y a trop de boîtes dans ce bus pour en changer le type\n"
-						+"Supprimer une ou plusieurs boîtes et réessayer.");
-			}
-		} else {
-			System.err.println("Le type de bus '"+busType+"' n'existe pas.");
-		}
-	}
-	
-	/**Return the max box amount for this bus
-	 * @return int*/
-	public int getMaxBox(){
-		Object maxBus = busTypeList.get(busType);
-		if(maxBus != null){
-			return (int)maxBus;
-		} else {
-			System.err.println("Le type de bus '"+busType+"' n'existe pas.");
-			return 0; //if the bus type doesn't exist, the limitation is unheeded
-		}
-	}
 	
 	/**Return the default box name
 	 * @return String*/
 	public static String getDefaultBoxName(){
 		return DEFAULT_BOX;
 	}
-
-//Imports & Exports [bus type list (de)serialization]
-	/**Import the bus type list from a serialized file
-	 * @param sourceFile the source file name (must have a '.ser' extension)*/
-	public static void importBusType(String sourceFile){
-		Object readedObject = Save.read(sourceFile+".ser");
-		if(readedObject instanceof HashMap){ //Check if the Object sub-type is a HashMap 
-			busTypeList = (HashMap<String, Integer>) readedObject;	    		  
-		} else if(busTypeList == null) {
-			busTypeList = new HashMap<>();
+	
+	/**Return the bus type
+	 * @return String*/
+	public String getBusType() {
+		return busType;
+	}
+	
+	/**Set the bus type of this bus (only if it's into the BusType list
+	 * @see BusType*/
+	public void setBusType(String busType) {
+		if(BusType.getInstance().containsKey(busType)){
+			this.busType = busType;			
 		} else {
-			System.err.println("Le fichier source ne contient pas la liste des types de bus.");
+			System.err.println("Le type de bus '"+busType+"' n'existe pas");
 		}
 	}
 	
-	/**Export the bus type list into a serialize file
-	 * @param targetFile the target file name (must have a '.ser' extension)*/
-	public static void exportBusType(String targetFile){
-		Save.save(busTypeList, targetFile+".ser");
-	}
-
-//bus type list editing
-	/**Add a new bus type
-	 * @param busType the bus type name
-	 * @param maxBox the maximum amount of message box for bus with this bus type
-	 * @param targetFile the target file name (must have a '.ser' extension)
-	 * @param sourceFile the source file name (must have a '.ser' extension)*/
-	public static void addBusType(String busType, int maxBox, String sourceFile, String targetFile){
-		 importBusType(sourceFile);
-		 busTypeList.put(busType, maxBox);
-         exportBusType(targetFile);
-	}
-	
-	/**Remove a bus type
-	 * @param busType the bus type to remove
-	 * @param targetFile the target file name (must have a '.ser' extension)
-	 * @param sourceFile the source file name (must have a '.ser' extension)*/
-	public static void removeBusType(String busType, String targetFile, String sourceFile){
-		importBusType(sourceFile);
-		busTypeList.remove(busType);
-		exportBusType(targetFile);
-	}
-	
-	/**Edit a bus type (change the max box amount)
-	 * @param busType the bus type name
-	 * @param maxBox the maximum amount of message box for bus with this bus type
-	 * @param targetFile the target file name (must have a '.ser' extension)
-	 * @param sourceFile the source file name (must have a '.ser' extension)*/
-	public static void editBusType(String busType, int maxBox, String sourceFile, String targetFile){
-		importBusType(sourceFile);
-		Object oldBusType = busTypeList.get(busType);
-		if(oldBusType != null){
-			busTypeList.put(busType, maxBox);
-			exportBusType(targetFile);
+	/**Get the max amount of box from the BusType list
+	 * @return int
+	 * @see BusType*/
+	public int getMaxBox(){
+		if(BusType.getInstance().containsKey(busType)){
+			return BusType.getInstance().get(busType);			
 		} else {
-			System.err.println("Le type de bus '"+busType+"' n'existe pas.");
+			return 1;
 		}
-	}
-	
-	public static HashMap<String, Integer> getBusTypeList(){
-		return busTypeList;
 	}
 }
