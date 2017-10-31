@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 
 /**Basé sur un code de Mireille Blay*/
 public class Save {
@@ -18,7 +19,6 @@ public class Save {
             oos = new ObjectOutputStream(new FileOutputStream(fileName));
             oos.writeObject(oToSave);
             oos.flush();
-            System.out.println("OBJET SAUVEGARDE");
         } catch (final java.io.IOException e) {
             e.printStackTrace();
         } finally {
@@ -45,6 +45,8 @@ public class Save {
             //System.out.println(o);
         } catch (final java.io.FileNotFoundException e) {
             System.out.println("Aucune sauvegarde antèrieure existante");
+        } catch (final StreamCorruptedException e) {
+        	System.out.println("Le fichier de sauvegarde est corrompu");
         } catch (final java.io.IOException e) {
             e.printStackTrace();
         } catch (final ClassNotFoundException e) {
@@ -54,6 +56,7 @@ public class Save {
                 if (ois != null) {
                     ois.close();
                 }
+               System.out.println(BusManager.getBusesNames());
             } catch (final IOException e) {
                 e.printStackTrace();
             }

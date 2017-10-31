@@ -34,6 +34,10 @@ public class UI {
 	public void printError(String text){
 		System.err.println(text);
 	}
+	
+	public void printBoxInfo(){
+		System.out.println("Laisser vide pour utiliser la boite par défaut.");
+	}
 
 //CREATE
 	public String createCommand(){
@@ -93,7 +97,6 @@ public class UI {
 	}
 	
 	public String getBoxName() {
-		System.out.println("Laisser vide pour utiliser la boite par défaut.");
 		System.out.print("Nom de la boite : ");
 		res = reader.nextLine();
 		return res;

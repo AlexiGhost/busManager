@@ -9,7 +9,7 @@ public class BusManager{
 //Variables
 	
 	private static BusManager INSTANCE = new BusManager();
-	private static List<Bus> buses = null;
+	private static List<Bus> buses = new ArrayList<>();
 
 //Constructor
 	
@@ -25,7 +25,11 @@ public class BusManager{
 	 * @param name the bus name*/
 	public static void createBus(String name, String busType){
 		if (!isBusExist(name)){
-			buses.add(new Bus(name, busType));
+			Bus bus = new Bus(name, busType);
+			if(bus.getBusType()!= null){
+				buses.add(bus);
+				System.out.println("Le bus "+bus.getName()+" a été crée avec succés.");
+			}
 		}
 		exportBusList("datas/buses");
 	}
@@ -38,16 +42,19 @@ public class BusManager{
 				buses.remove(bus);
 			}
 		}
+		exportBusList("datas/buses");
 	}
 	//Check
 	/**Check if the bus exist within the buses list
 	 * @return boolean
 	 * @param name the name of the bus to check*/
 	public static boolean isBusExist(String name){
-		for (Bus bus : buses) {
-			if (bus.getName().equals(name)){
-				return true;
-			}
+		if(buses.size()!=0){
+			for (Bus bus : buses) {
+				if (bus.getName().equals(name)){
+					return true;
+				}
+			}			
 		}
 		return false;
 	}
@@ -80,8 +87,12 @@ public class BusManager{
 	 * @return List<String> the buses names*/
 	public static List<String> getBusesNames(){
 		List<String> busesNames = new ArrayList<>();
-		for(Bus bus : buses){
-			busesNames.add(bus.getName());
+		try{
+			for(Bus bus : buses){
+				busesNames.add(bus.getName());
+			}
+		} catch(NullPointerException e){
+			System.err.println("Il n'y a pas de bus.");
 		}
 		return busesNames;
 	}
@@ -94,10 +105,6 @@ public class BusManager{
 		Object readedObject = Save.read(sourceFile);
 		if(readedObject instanceof ArrayList){ //Check if the Object sub-type is an ArrayList 
 			buses = (ArrayList<Bus>) readedObject; 			
-		} else if(buses == null) {
-			buses = new ArrayList<>();
-		} else {
-			System.err.println("Le fichier source est corrompu");
 		}
 	}
 	

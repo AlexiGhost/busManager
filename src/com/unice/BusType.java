@@ -9,12 +9,28 @@ public class BusType extends HashMap<String, Integer>{
 	private static BusType INSTANCE = new BusType();
 	
 	private BusType() {
-		this.put("Community", 2);
-		this.put("Premium", 5);
-		this.put("Pro", 0);
+		this.put("community", 2);
+		this.put("premium", 5);
+		this.put("pro", 0);
 	}
 	
 	public static BusType getInstance(){
 		return INSTANCE;
+	}
+	
+	public int getValue(String key){
+		if(containsKey(key)){
+			return get(key);			
+		} else {
+			return -1;
+		}
+	}
+	
+	public boolean isKeyExist(String key){
+		if(containsKey(key)){
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

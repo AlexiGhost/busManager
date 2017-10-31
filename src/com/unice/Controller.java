@@ -31,7 +31,7 @@ public class Controller {
 				ui.print("A bientôt !");
 				break;
 			default:
-				ui.printError("Cette commande n'existe pas, veuillez réessayer");
+				ui.printError("Cette commande n'existe pas, veuillez réessayer\n");
 				break;
 			}
 			for(int i=0;i<0;i++){
@@ -56,7 +56,7 @@ public class Controller {
 			createMessage();
 			break;
 		default:
-			ui.printError("Cette commande n'existe pas, veuillez réessayer");
+			ui.printError("Cette commande n'existe pas, veuillez réessayer\n");
 			break;
 		}
 	}
@@ -64,7 +64,6 @@ public class Controller {
 		res = ui.getBusName();
 		res2 = ui.getBusType();
 		BusManager.createBus(res, res2);
-		ui.print("Bus crée avec succés");
 	}
 	public void createBox(){
 		res = ui.getBusName();
@@ -76,13 +75,16 @@ public class Controller {
 			} else {
 				BusManager.getBus(res).createBox(res2, maxSize);
 			}
-			ui.print("La boite à été crée avec succés");
+			if(BusManager.isBusExist(res2)){
+				ui.print("La boite à été crée avec succés");				
+			}
 		} else {
 			System.err.println("Ce bus n'existe pas");
 		}
 	}
 	public void createMessage(){
 		res = ui.getBusName();
+		ui.printBoxInfo();
 		res2 = ui.getBoxName();
 		String messageContent = ui.getMessage();
 		if(res2.length() == 0){
@@ -113,7 +115,7 @@ public class Controller {
 			showBoxesNames();
 			break;
 		default:
-			ui.printError("Cette commande n'existe pas, veuillez réessayer");
+			ui.printError("Cette commande n'existe pas, veuillez réessayer\n");
 			break;
 		}
 	}
@@ -150,7 +152,7 @@ public class Controller {
 			deleteMessages();
 			break;
 		default:
-			ui.printError("Cette commande n'existe pas, veuillez réessayer");
+			ui.printError("Cette commande n'existe pas, veuillez réessayer\n");
 			break;
 		}
 	}

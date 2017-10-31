@@ -20,7 +20,9 @@ public class Bus implements Serializable{
 	public Bus(String name, String busType) {
 		setName(name);
 		setBusType(busType);
-		createBox(DEFAULT_BOX);
+		if(this.busType != null){
+			createBox(DEFAULT_BOX);			
+		}
 	}
 	
 //Functions
@@ -29,8 +31,9 @@ public class Bus implements Serializable{
 	 * @see Box*/
 	public void createBox(String name){
 		if(!isBoxExist(name)){
-			if(boxes.size()<this.getMaxBox() || this.getMaxBox()==0){
-				boxes.add(new Box(name));								
+			if(boxes.size()<this.getMaxBox()){
+				boxes.add(new Box(name));
+				BusManager.exportBusList("datas/buses");
 			} else {
 				System.out.println("Vous avez atteint le maximum de boite pour ce bus.");
 			}
@@ -41,7 +44,9 @@ public class Bus implements Serializable{
 	 * @see Box*/
 	public void createBox(String name, int maxMessageSize){
 		createBox(name);
-		getBox(name).setMaxMessageSize(maxMessageSize);
+		if (isBoxExist(name)){ //if the maximum amount of box is reached, the new box didn't exist 
+			getBox(name).setMaxMessageSize(maxMessageSize);			
+		}
 	}
 	
 	/**Create a message into a specific box.
@@ -51,6 +56,7 @@ public class Bus implements Serializable{
 	 * @see Message*/
 	public void createMessage(String boxName, String content){
 		getBox(boxName).createMessage(content);
+		BusManager.exportBusList("datas/buses");
 	}
 	/**Create a message into the default box.
 	 * @param content the content of the message.
@@ -58,6 +64,7 @@ public class Bus implements Serializable{
 	 * @see Message*/
 	public void createMessage(String content){
 		getBox(DEFAULT_BOX).createMessage(content);
+		BusManager.exportBusList("datas/buses");
 	}
 	//Delete
 	/**Delete a box from the bus.
@@ -65,7 +72,8 @@ public class Bus implements Serializable{
 	public void deleteBox(String boxName){
 		if(isBoxExist(boxName)){
 			if(boxName != DEFAULT_BOX){
-				boxes.remove(getBox(boxName));							
+				boxes.remove(getBox(boxName));
+				BusManager.exportBusList("datas/buses");
 			} else {
 				System.err.println("Vous ne pouvez pas supprimer la boite par défaut.");
 			}
@@ -142,11 +150,12 @@ public class Bus implements Serializable{
 		return busType;
 	}
 	
-	/**Set the bus type of this bus (only if it's into the BusType list
+	/**Set the bus type of this bus (only if it's into the BusType list)
+	 * @param busType the name of the busType
 	 * @see BusType*/
 	public void setBusType(String busType) {
-		if(BusType.getInstance().containsKey(busType)){
-			this.busType = busType;			
+		if(BusType.getInstance().isKeyExist(busType)){
+			this.busType = busType;
 		} else {
 			System.err.println("Le type de bus '"+busType+"' n'existe pas");
 		}
@@ -156,10 +165,6 @@ public class Bus implements Serializable{
 	 * @return int
 	 * @see BusType*/
 	public int getMaxBox(){
-		if(BusType.getInstance().containsKey(busType)){
-			return BusType.getInstance().get(busType);			
-		} else {
-			return 1;
-		}
+		return BusType.getInstance().getValue(busType);
 	}
 }
