@@ -11,7 +11,7 @@ public class BusType extends HashMap<String, Integer>{
 	private BusType() {
 		this.put("community", 2);
 		this.put("premium", 5);
-		this.put("pro", 0);
+		this.put("pro", 0); //no limit
 	}
 	
 	public static BusType getInstance(){

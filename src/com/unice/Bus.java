@@ -31,9 +31,9 @@ public class Bus implements Serializable{
 	 * @see Box*/
 	public void createBox(String name){
 		if(!isBoxExist(name)){
-			if(boxes.size()<this.getMaxBox()){
+			if(boxes.size()<this.getMaxBox() || this.getMaxBox()==0){
 				boxes.add(new Box(name));
-				BusManager.exportBusList("datas/buses");
+				System.out.println("La boite à été crée avec succés");
 			} else {
 				System.out.println("Vous avez atteint le maximum de boite pour ce bus.");
 			}
@@ -56,7 +56,6 @@ public class Bus implements Serializable{
 	 * @see Message*/
 	public void createMessage(String boxName, String content){
 		getBox(boxName).createMessage(content);
-		BusManager.exportBusList("datas/buses");
 	}
 	/**Create a message into the default box.
 	 * @param content the content of the message.
@@ -64,7 +63,6 @@ public class Bus implements Serializable{
 	 * @see Message*/
 	public void createMessage(String content){
 		getBox(DEFAULT_BOX).createMessage(content);
-		BusManager.exportBusList("datas/buses");
 	}
 	//Delete
 	/**Delete a box from the bus.
@@ -73,7 +71,7 @@ public class Bus implements Serializable{
 		if(isBoxExist(boxName)){
 			if(boxName != DEFAULT_BOX){
 				boxes.remove(getBox(boxName));
-				BusManager.exportBusList("datas/buses");
+				System.out.println("La boite '"+boxName+"' a été supprimé avec succés.");
 			} else {
 				System.err.println("Vous ne pouvez pas supprimer la boite par défaut.");
 			}
@@ -85,7 +83,7 @@ public class Bus implements Serializable{
 	 * @return boolean*/
 	public boolean isBoxExist(String boxName){
 		for(Box box : boxes){
-			if (box.getName().equals(name)){
+			if (box.getName().equals(boxName)){
 				return true;
 			}
 		}

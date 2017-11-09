@@ -37,14 +37,20 @@ public class Box implements Serializable{
 	 * @param content the message content.
 	 * @see Message*/
 	public void createMessage(String content){
-		if(messages.size() >= maxMessage){
+		if(messages.size() < maxMessage){
 			if(maxMessageSize == 0){
-				messages.add(new Message(content));							
+				messages.add(new Message(content));
+				System.out.println("Message ajouté avec succés !");
 			} else {
 				if(content.length() <= maxMessageSize){
 					messages.add(new Message(content));
+					System.out.println("Message ajouté avec succés !");
+				} else {
+					System.err.println("Ce message dépasse le nombre de caractères autorisés ("+maxMessageSize+")");
 				}
 			}
+		} else {
+			System.err.println("Nombre maximal de messages atteint");
 		}
 	}
 	//Delete
@@ -60,13 +66,16 @@ public class Box implements Serializable{
 	 * @param minute the number of minute
 	 * @param seconds the number of seconds*/
 	public void deleteOlderMessage(int day, int hour, int minute, int seconds){
-		long MaxTime = day*24*3600000 + hour*3600000 + minute*60000 + seconds*1000;
+		long MaxTime = day*24*60*60*1000 + hour*60*60*1000 + minute*60*1000 + seconds*1000;
 		Date now = new Date();
+		List<Message> messagesToDelete = new ArrayList<>();
 		for(Message message : getMessages()){
-			if((now.getTime()-message.getDateCreation().getTime()) > MaxTime){
-				messages.remove(messages.indexOf(message));
-			}
+			if((now.getTime()-message.getDateCreation().getTime()) > MaxTime) messagesToDelete.add(message);
 		}
+		for(Message message : messagesToDelete){
+			messages.remove(messages.indexOf(message));
+		}
+		System.out.println(messagesToDelete.size()+" messages supprimées.");
 	}
 	/**Delete all the messages of the box.*/
 	public void deleteMessages(){

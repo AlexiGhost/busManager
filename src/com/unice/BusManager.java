@@ -14,9 +14,7 @@ public class BusManager{
 //Constructor
 	
 	/**Private constructor*/
-	private BusManager(){
-		importBusList("datas/buses");
-	}
+	private BusManager(){}
 	
 //Functions
 	
@@ -37,9 +35,13 @@ public class BusManager{
 	/**Delete a bus within the buses list
 	 * @param name The name of the bus you want to delete*/
 	public static void deleteBus(String name){
-		for (Bus bus : buses){
-			if(isBusExist(name)){
-				buses.remove(bus);
+		if(isBusExist(name)){
+			for (Bus bus : buses){
+				if(bus.getName().equals(name)){
+					buses.remove(bus);
+					System.out.println("Le bus '"+name+"' a été supprimé");
+					return;
+				}
 			}
 		}
 		exportBusList("datas/buses");
@@ -100,11 +102,13 @@ public class BusManager{
 	
 	/**Import the bus list from a file
 	 * @param sourceFile the source file name (must have a '.ser' extension)*/
-	@SuppressWarnings("unchecked") //Checked with InstanceOf
+	@SuppressWarnings("unchecked") //checked by 'instanceof'
 	public static void importBusList(String sourceFile){
-		Object readedObject = Save.read(sourceFile);
-		if(readedObject instanceof ArrayList){ //Check if the Object sub-type is an ArrayList 
-			buses = (ArrayList<Bus>) readedObject; 			
+		Object readObject = Save.read(sourceFile);
+		if(readObject instanceof ArrayList){ //Check if the Object sub-type is an ArrayList 
+			buses = (ArrayList<Bus>) readObject; 			
+		} else {
+			System.err.println("Le fichier de sauvegarde est corrompu/inexistant");
 		}
 	}
 	

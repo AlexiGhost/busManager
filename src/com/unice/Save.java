@@ -34,7 +34,8 @@ public class Save {
     }
 
     /**Read an object from a file
-     * @param fileName the source file*/
+     * @param fileName the source file
+     * @return Object - the read object (null if an error occur)*/
     public static Object read (String fileName){
     	fileName+=".ser";
         ObjectInputStream ois = null;
@@ -48,15 +49,14 @@ public class Save {
         } catch (final StreamCorruptedException e) {
         	System.out.println("Le fichier de sauvegarde est corrompu");
         } catch (final java.io.IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         } catch (final ClassNotFoundException e) {
-            e.printStackTrace();
+            e.getMessage();
         } finally {
             try {
                 if (ois != null) {
                     ois.close();
                 }
-               System.out.println(BusManager.getBusesNames());
             } catch (final IOException e) {
                 e.printStackTrace();
             }
