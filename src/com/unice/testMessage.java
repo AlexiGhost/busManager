@@ -28,6 +28,11 @@ public class testMessage {
 	}
 	
 	@Test
+	public void Message() {
+        assertNotNull(m1);
+    }
+	
+	@Test
 	/**Test - getContent()*/
 	public void getContent(){
 		assertEquals("Le contenu ne correspond pas", "Message 1", m1.getContent());
