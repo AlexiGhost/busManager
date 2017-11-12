@@ -24,7 +24,6 @@ public class testBox {
 	public void nettoyer(){
 		b1 = null;
 	}
-
 	
 	@Test
 	/**Return the name of the box.*/

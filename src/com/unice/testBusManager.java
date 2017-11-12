@@ -1,78 +1,57 @@
 package com.unice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.*;
-//import static org.junit.jupiter.api.Assertions.*;
-//import org.junit.jupiter.api.Test;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 
 class testBusManager {
 	
-	Bus b1;
-	
 	@Before
 	/**Créer des Bus pour le test*/
 	public void initialiser(){
-		b1 = new Bus("Bus un", "");
 	}
 	
 	@After
 	/**Detruit les Messages*/
 	public void nettoyer(){
-		b1 = null;
-	}
-	
-	@Test
-	public void getInstance(){
-		assertEquals("L'instance ne correspond pas", "Bus un", b1.getInstance());
 	}
 	
 	@Test
 	public void getBuses(){
-		assertEquals("Les buses ne correspondent pas", "Bus un", b1.getBuses());
+		BusManager.createBus("bus", "pro");
+		assertEquals("Les bus ne correspondent pas", 1, BusManager.getBuses().size());
 	}
 	
 	@Test
 	public void getBus(){
-		assertEquals("Le nom ne correspond pas", "Bus un", b1.getBus());
+		BusManager.createBus("bus", "pro");
+		assertEquals("Le nom ne correspond pas", "bus", BusManager.getBus("bus"));
 	}
 	
 	@Test
 	public void getBusesNames(){
-		assertEquals("Les noms ne correspondent pas", "Bus un", b1.getBusesNames());
-	}
-	
-	@Test
-	public void importBusList(){
-		
-	}
-	
-	@Test
-	public void exportBusList(){
-		
+		BusManager.createBus("bus", "pro");
+		assertEquals("Les noms ne correspondent pas", "bus", BusManager.getBusesNames().get(0));
 	}
 	
 	@Test
 	public void createBus(){
-		b1.createBus("Bonjour c moi");
-		assertEquals("Le bus n'a pas été créer", "Bonjour c moi", b1.getBus().content());
+		BusManager.createBus("bus","pro");
+		assertEquals("Le bus n'a pas été créer", "bus", BusManager.getBus("bus"));
 	}
 	
 	@Test
 	public void deleteBus(){
-		b1.createBus("Bonjour c moi");
-		b1.deleteBus();
-		assertEquals("Le bus n'a pas été supprimé", 0, b1.getBus().size());
+		BusManager.createBus("bus","pro");
+		BusManager.deleteBus("bus");
+		assertEquals("Le bus n'a pas été supprimé", 1, BusManager.getBus("bus"));
 	}
 	
 	@Test
 	public void isBusExist(){
-		assertNotNull(b1);
+		BusManager.createBus("bus", "pro");
+		assertEquals("Le bus n'existe pas",true, BusManager.isBusExist("bus"));
 	}
-
 
 }
